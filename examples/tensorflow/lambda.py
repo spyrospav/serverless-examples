@@ -1,7 +1,7 @@
 import os
 import sys
 import json
-import ConfigParser
+import configparser
 
 """
 This is needed so that the script running on AWS will pick up the pre-compiled dependencies
@@ -83,7 +83,7 @@ class TensorFlowRegressionModel:
 Declare here global objects living across requests
 """
 # use Pythonic ConfigParser to handle settings
-Config = ConfigParser.ConfigParser()
+Config = config.ConfigParser()
 Config.read(HERE + '/settings.ini')
 # instantiate the tf_model in "prediction mode"
 tf_model = TensorFlowRegressionModel(Config, is_training=False)
