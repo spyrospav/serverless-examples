@@ -2,9 +2,16 @@ import requests
 from lxml import html
 
 def handler(event, context):
-    # TODO - change this URL to a frozen X account
-    url = "https://twitter.com/realDonaldTrump"
+    url = "https://github.com/spyrospav"
     response = requests.request("GET", url)
     tree = html.fromstring(response.content)
-    vecTweets = tree.xpath('//div[@class="js-tweet-text-container"]//p')	
-    return vecTweets[0].text_content()
+    # Extract the username using XPath
+    username = tree.find_class("vcard-username")[0].text_content()
+
+    # remove spaces and newlines
+    username = username.strip()
+
+    return username
+
+if __name__ == "__main__":
+    print(handler(42, 42))
