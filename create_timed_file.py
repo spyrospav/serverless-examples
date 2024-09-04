@@ -18,7 +18,10 @@ def process_python_file(path: str):
     new_path = os.path.splitext(path)[0] + "_timed.py"
 
     start_timing_stubs = ["import time\n", "IMPORT_START_TIME = time.time()\n"]
-    end_timing_stubs = ["IMPORT_END_TIME = time.time()\n", 'print(f"<import {IMPORT_END_TIME - IMPORT_START_TIME} seconds>")']
+    end_timing_stubs = [
+        "IMPORT_END_TIME = time.time()\n",
+        'print(f"<import {IMPORT_END_TIME - IMPORT_START_TIME} seconds>")',
+    ]
 
     original_lines = []
     import_linenos = []
