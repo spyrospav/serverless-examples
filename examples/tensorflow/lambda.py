@@ -83,7 +83,7 @@ class TensorFlowRegressionModel:
 Declare here global objects living across requests
 """
 # use Pythonic ConfigParser to handle settings
-Config = config.ConfigParser()
+Config = configparser.ConfigParser()
 Config.read(HERE + '/settings.ini')
 # instantiate the tf_model in "prediction mode"
 tf_model = TensorFlowRegressionModel(Config, is_training=False)
