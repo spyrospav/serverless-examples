@@ -1,0 +1,3 @@
+[submodule "examples/compression/acmart"]
+	path = examples/compression/acmart
+	url = https://github.com/borisveytsman/acmart
