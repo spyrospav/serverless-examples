@@ -4,7 +4,6 @@ import json
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__))))
 
 from squiggle import transform
-import requests
 
 local_path = "./"
 
