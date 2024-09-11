@@ -14,7 +14,9 @@ sys.path.append(os.path.join(HERE, "vendored"))
 Now that the script knows where to look, we can safely import our objects
 """
 # refactored from the examples at https://github.com/aymericdamien/TensorFlow-Examples
-import tensorflow as tf
+#import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 import numpy
 
 class TensorFlowRegressionModel:
@@ -46,7 +48,7 @@ class TensorFlowRegressionModel:
         """
         Define the linear regression model through the variables
         """
-        return tf.add(tf.mul(vars['X'], vars['W']), vars['b'])
+        return tf.add(tf.multiply(vars['X'], vars['W']), vars['b'])
 
     def restore_model(self, model_dir):
         sess = tf.Session()
@@ -154,3 +156,14 @@ def lambda_handler(event, context):
         return return_lambda_gateway_response(503, error_response)
 
     return return_lambda_gateway_response(200, {'value': value})
+
+if __name__ == "__main__":
+    # for testing purposes
+    event = {
+        'queryStringParameters': {
+            'x': 2.7
+        }
+    }
+    response = lambda_handler(event, None)
+    print(json.loads(response['body']))
+    print("Got error but at least we got a response")

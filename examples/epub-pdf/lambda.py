@@ -6,6 +6,16 @@ from docx.shared import Inches
 from ebooklib import epub
 from PIL import Image,ImageFont,ImageDraw
 from boto3.session import Session as boto3_session
+import os
+
+BUCKET_NAME = 'serverless-torch-xl'
+AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+AWS_SECRET = os.environ['AWS_SECRET_ACCESS_KEY']
+
+
+
+
+
 
 def uploadToS3(strFolder,strFile,awsCred):
 	if (awsCred['accessKeyId'] != ''):
@@ -23,12 +33,12 @@ def uploadToS3(strFolder,strFile,awsCred):
 def handler(event, context):
 
 	awsCred = {}
-	awsCred['accessKeyId'] = ''
-	awsCred['secretAccessKey'] = ''
-	awsCred['bucket'] = ''
+	awsCred['accessKeyId'] = AWS_ACCESS_KEY_ID
+	awsCred['secretAccessKey'] = AWS_SECRET
+	awsCred['bucket'] = BUCKET_NAME
 	strFolder = 'docs'
 
-	strFolderPath = '/tmp/'
+	strFolderPath = './'
 
 	img = Image.new("RGB", (128, 128), "white")
 	draw = ImageDraw.Draw(img)

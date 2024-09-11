@@ -4,6 +4,17 @@ from __future__ import print_function
 
 import boto3
 from wand.image import Image
+import os
+
+BUCKET_NAME = "serverless-torch-xl"
+AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
+
+session = boto3.Session(
+    aws_access_key_id=AWS_ACCESS_KEY_ID,
+    aws_secret_access_key=AWS_SECRET_ACCESS_KEY
+)
+
 
 def resize_image(image, resize_width, resize_height):
     """Resize an image
@@ -90,8 +101,8 @@ def handle_resize(event, context):
     :type context: dict
     """
     # Obtain the bucket name and key for the event
-    bucket_name = event['Records'][0]['s3']['bucket']['name']
-    key_path = event['Records'][0]['s3']['object']['key']
+    bucket_name = BUCKET_NAME
+    key_path = "happyFace.jpg"
 
     # Retrieve the S3 Object
     s3_connection = boto3.resource('s3')
@@ -110,3 +121,6 @@ def handle_resize(event, context):
 
     # Finally remove, as the bucket is public and we don't want just anyone dumping the list of our files!
     s3_object.delete()
+  
+if __name__ == '__main__':
+    handle_resize(None, None)

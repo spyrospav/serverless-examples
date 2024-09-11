@@ -1,7 +1,8 @@
 import json
-from sklearn.externals import joblib
+import joblib
+import sys
 
-model_name = 'model_1553724836.6208675.joblib'
+model_name = 'model.joblib'
 model = joblib.load(model_name)
 
 def lambda_handler(event, context):
@@ -65,4 +66,17 @@ def do_main():
         event_file.write(json.dumps(event))
     
 
-#do_main()
+if __name__ == "__main__":
+    event = {
+        'queryStringParameters': {
+            'medInc': 200000,
+            'houseAge': 10,
+            'aveRooms': 4,
+            'aveBedrms': 1,
+            'population': 800,
+            'aveOccup': 3,
+            'latitude': 37.54,
+            'longitude': -121.72
+        }
+    }
+    lambda_handler(event, None)
