@@ -1,0 +1,12 @@
+{
+    "tests": [
+        {
+            "name": "test1",
+            "event": {
+                "local_path": "./compression/",
+                "folder_name": "acmart"
+            },
+            "context": {}
+        }
+    ]
+}

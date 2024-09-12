@@ -5,17 +5,17 @@ import shutil
 import uuid
 import zlib
 
-folder_name = "acmart"
-local_path = "./"
-
 def compress(path, key):
-    shutil.make_archive(os.path.join(path, key), 'zip', root_dir=path)
+    archive = os.path.join(path, key)
+    shutil.make_archive(archive, 'zip', root_dir=path)
     archive_name = '{}.zip'.format(key)
     archive_size = os.path.getsize(os.path.join(path, archive_name))
 
     return archive_name, archive_size
 
 def handler(event, context=None):
+    local_path = event.get('local_path')
+    folder_name = event.get('folder_name')
     archive_name, archive_size = compress(local_path, folder_name)
 
     return {
@@ -24,5 +24,8 @@ def handler(event, context=None):
 
 
 if __name__ == "__main__":
-    event = {}
+    event = {
+        'local_path': "./",
+        'folder_name': "acmart"
+    }
     print(handler(event))
