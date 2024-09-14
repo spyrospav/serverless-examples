@@ -1,0 +1,12 @@
+{
+    "tests": [
+        {
+            "name": "test1",
+            "event": {
+                "dataset_name": "pima-indians-diabetes.csv",
+                "model": "model.txt"
+            },
+            "context": {}
+        }
+    ]
+}

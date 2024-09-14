@@ -12,11 +12,6 @@ BUCKET_NAME = 'serverless-torch-xl'
 AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
 AWS_SECRET = os.environ['AWS_SECRET_ACCESS_KEY']
 
-
-
-
-
-
 def uploadToS3(strFolder,strFile,awsCred):
 	if (awsCred['accessKeyId'] != ''):
 		print('Uploading '+strFile+' to bucket '+awsCred['bucket']+'/'+strFolder)
@@ -86,3 +81,8 @@ def handler(event, context):
 	            )
 	epub.write_epub(strFolderPath+'demo.epub', book, {})
 	uploadToS3(strFolder,strFolderPath+'demo.epub',awsCred)
+
+if __name__ == "__main__":
+	event = None
+	context = None
+	print(handler(event, context))

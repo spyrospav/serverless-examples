@@ -5,7 +5,7 @@ def graph_ops(size):
     return graph.pagerank()[0]
 
 def handler(event, context=None):
-    size = 1000
+    size = event.get("size", 1000)
     result = graph_ops(size)
 
     return {
@@ -14,5 +14,7 @@ def handler(event, context=None):
 
 
 if __name__ == "__main__":
-    event = {}
+    event = {
+        "size": 1000
+    }
     print(handler(event))

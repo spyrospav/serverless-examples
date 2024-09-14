@@ -1,0 +1,18 @@
+{
+    "tests": [
+        {
+            "name": "test1",
+            "event": {
+                "size": 10
+            },
+            "context": {}
+        },
+        {
+            "name": "test2",
+            "event": {
+                "size": 1000
+            },
+            "context": {}
+        }
+    ]
+}

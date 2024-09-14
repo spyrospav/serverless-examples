@@ -3,7 +3,7 @@ IMPORT_START_TIME = time.time()
 import os
 import sys
 import json
-import ConfigParser
+import configparser
 
 """
 This is needed so that the script running on AWS will pick up the pre-compiled dependencies
@@ -16,7 +16,9 @@ sys.path.append(os.path.join(HERE, "vendored"))
 Now that the script knows where to look, we can safely import our objects
 """
 # refactored from the examples at https://github.com/aymericdamien/TensorFlow-Examples
-import tensorflow as tf
+#import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 import numpy
 IMPORT_END_TIME = time.time()
 print(f"<import {IMPORT_END_TIME - IMPORT_START_TIME} seconds>")
@@ -49,7 +51,7 @@ class TensorFlowRegressionModel:
         """
         Define the linear regression model through the variables
         """
-        return tf.add(tf.mul(vars['X'], vars['W']), vars['b'])
+        return tf.add(tf.multiply(vars['X'], vars['W']), vars['b'])
 
     def restore_model(self, model_dir):
         sess = tf.Session()
@@ -86,7 +88,7 @@ class TensorFlowRegressionModel:
 Declare here global objects living across requests
 """
 # use Pythonic ConfigParser to handle settings
-Config = ConfigParser.ConfigParser()
+Config = configparser.ConfigParser()
 Config.read(HERE + '/settings.ini')
 # instantiate the tf_model in "prediction mode"
 tf_model = TensorFlowRegressionModel(Config, is_training=False)
@@ -157,3 +159,14 @@ def lambda_handler(event, context):
         return return_lambda_gateway_response(503, error_response)
 
     return return_lambda_gateway_response(200, {'value': value})
+
+if __name__ == "__main__":
+    # for testing purposes
+    event = {
+        'queryStringParameters': {
+            'x': 2.7
+        }
+    }
+    response = lambda_handler(event, None)
+    print(json.loads(response['body']))
+    print("Got error but at least we got a response")

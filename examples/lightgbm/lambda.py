@@ -2,7 +2,8 @@ import lightgbm as lgb
 import numpy
 
 def handler(event, context=None):
-    dataset = numpy.loadtxt("pima-indians-diabetes.csv", delimiter=",")
+    dataset_name = event.get("dataset_name")
+    dataset = numpy.loadtxt(dataset_name, delimiter=",")
     X = dataset[:, 0:8]
     Y = dataset[:, 8]
 
@@ -14,6 +15,7 @@ def handler(event, context=None):
 
 if __name__ == "__main__":
     event = {
+        "dataset_name": "pima-indians-diabetes.csv",
         "model": "model.txt"
     }
     print(handler(event))

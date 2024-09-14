@@ -102,7 +102,7 @@ def handle_resize(event, context):
     """
     # Obtain the bucket name and key for the event
     bucket_name = BUCKET_NAME
-    key_path = "happyFace.jpg"
+    key_path = event.get('key_path', "happyFace.jpg")
 
     # Retrieve the S3 Object
     s3_connection = boto3.resource('s3')
@@ -126,4 +126,7 @@ def handle_resize(event, context):
         print("ignoring error: {}".format(e))
   
 if __name__ == '__main__':
+    event = {
+        "key_path": "happyFace.jpg"
+    }
     handle_resize(None, None)

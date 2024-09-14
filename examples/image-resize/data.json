@@ -1,0 +1,11 @@
+{
+    "tests": [
+        {
+            "name": "test1",
+            "event": {
+                "key_path": "happyFace.jpg"
+            },
+            "context": {}
+        }
+    ]
+}

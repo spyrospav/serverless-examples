@@ -12,10 +12,21 @@ import boto3
 import os
 IMPORT_END_TIME = time.time()
 print(f"<import {IMPORT_END_TIME - IMPORT_START_TIME} seconds>")
+BUCKET_NAME = 'serverless-torch-xl'
+AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+AWS_SECRET = os.environ['AWS_SECRET_ACCESS_KEY']
+
+
+session = boto3.Session(
+    aws_access_key_id=AWS_ACCESS_KEY_ID,
+    aws_secret_access_key=AWS_SECRET
+)
+
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-s3_bucket = os.environ['s3_model_bucket']
+s3_bucket = BUCKET_NAME
+
 logger.info("Bucket for model is: " + str(s3_bucket))
 
 def train_model(event, context):
@@ -46,7 +57,8 @@ def train_model(event, context):
     X_test = data[~split].drop(['quality', 'split'], axis=1)
 
     y_train = data.quality[split]
-    y_test = data.quality[~split].as_matrix()
+    # y_test = data.quality[~split].as_matrix()
+    y_test = data.quality[~split].to_numpy()
 
     logger.info(" > Training Random Forest Model < ")
 
@@ -124,3 +136,6 @@ def predict_with_model(event, context):
     predicted_wine_grade = model.predict(input_for_prediction)
 
     return str(round(predicted_wine_grade, 1))
+
+if __name__ == "__main__":
+    print(train_model(None, None))
