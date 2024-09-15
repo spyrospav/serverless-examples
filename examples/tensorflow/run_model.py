@@ -18,6 +18,8 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 import tensorflow as tf  # noqa: E402
 
 rng = numpy.random
+rng.seed(42)
+tf.random.set_seed(42)
 
 
 class TensorFlowRegressionModel:

@@ -18,6 +18,8 @@ import tensorflow as tf  # noqa: E402
 import numpy  # noqa: E402
 
 rng = numpy.random
+rng.seed(42)
+tf.random.set_seed(42)
 
 
 class TensorFlowRegressionModel:
