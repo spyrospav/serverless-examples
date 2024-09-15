@@ -1,6 +1,7 @@
 """process Python files to create timed import version of it"""
 
 import os
+import argparse
 
 
 def find_python_files(directory: str) -> list[str]:
@@ -51,7 +52,26 @@ def process_python_file(path: str):
 
 
 if __name__ == "__main__":
-    for filename in find_python_files("./examples"):
-        if not filename.endswith("_timed.py"):
-            print(f"processing {filename}")
-            process_python_file(filename)
+
+    # create a simple parser to get target filename
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "--filename",
+        "-f",
+        help="specify the target file to process",
+        type=str,
+        default=None,
+    )
+
+    # if filename is empty do it for all files in examples
+    args = parser.parse_args()
+
+    if args.filename:
+        print(f"processing {args.filename}")
+        process_python_file(args.filename)
+    else:
+        for filename in find_python_files("./examples"):
+            if not filename.endswith("_timed.py"):
+                print(f"processing {filename}")
+                process_python_file(filename)

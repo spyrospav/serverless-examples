@@ -21,6 +21,8 @@ import numpy  # noqa: E402
 IMPORT_END_TIME = time.time()
 print(f"<import {IMPORT_END_TIME - IMPORT_START_TIME} seconds>")
 rng = numpy.random
+rng.seed(42)
+tf.random.set_seed(42)
 
 
 class TensorFlowRegressionModel:
