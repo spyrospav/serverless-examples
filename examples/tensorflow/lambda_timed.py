@@ -1,3 +1,5 @@
+"""Refactored from the examples at https://github.com/aymericdamien/TensorFlow-Examples"""
+
 import time
 IMPORT_START_TIME = time.time()
 import os
@@ -5,95 +7,75 @@ import sys
 import json
 import configparser
 
-"""
-This is needed so that the script running on AWS will pick up the pre-compiled dependencies
-from the vendored folder
-"""
+
+# ask AWS to pick up pre-compiled dependencies from the vendored folder ?
 HERE = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(HERE, "vendored"))
 
-"""
-Now that the script knows where to look, we can safely import our objects
-"""
-# refactored from the examples at https://github.com/aymericdamien/TensorFlow-Examples
-#import tensorflow as tf
-import tensorflow.compat.v1 as tf
-tf.disable_v2_behavior()
-import numpy
+# shutup tensorflow
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+
+
+import tensorflow as tf  # noqa: E402
+import numpy  # noqa: E402
 IMPORT_END_TIME = time.time()
 print(f"<import {IMPORT_END_TIME - IMPORT_START_TIME} seconds>")
+rng = numpy.random
+
+
 class TensorFlowRegressionModel:
+    def __init__(self, config: configparser.ConfigParser, is_training=True):
+        self.W = tf.Variable(rng.randn(), name="weight")
+        self.b = tf.Variable(rng.randn(), name="bias")
 
-    def __init__(self, config, is_training=True):
-        # store the model variables into a class object
-        self.vars = self.set_vars()
-        self.model = self.build_model(self.vars)
-        # if it is not training, restore the model and store the session in the class
+        self.optimizer = tf.optimizers.SGD(float(config.get("model", "LEARNING_RATE")))
+        self.checkpoint = tf.train.Checkpoint(W=self.W, b=self.b)
+
         if not is_training:
-            self.sess = self.restore_model(config.get('model', 'LOCAL_MODEL_FOLDER'))
+            self.restore_model(config.get("model", "LOCAL_MODEL_FOLDER"))
 
-        return
+    def linear_regression(self, x):
+        return self.W * x + self.b
 
-    def set_vars(self):
-        """
-        Define the linear regression model through the variables
-        """
-        return {
-            # placeholders
-            'X': tf.placeholder("float"),
-            'Y': tf.placeholder("float"),
-            # model weight and bias
-            'W': tf.Variable(numpy.random.randn(), name="weight"),
-            'b': tf.Variable(numpy.random.randn(), name="bias")
-        }
-
-    def build_model(self, vars):
-        """
-        Define the linear regression model through the variables
-        """
-        return tf.add(tf.multiply(vars['X'], vars['W']), vars['b'])
+    def mean_square(self, y_pred, y_true):
+        return tf.reduce_mean(tf.square(y_pred - y_true))
 
     def restore_model(self, model_dir):
-        sess = tf.Session()
-        saver = tf.train.Saver()
-        ckpt = tf.train.get_checkpoint_state(model_dir)
-        if ckpt and ckpt.model_checkpoint_path:
-            saver.restore(sess, ckpt.model_checkpoint_path)
+        latest_checkpoint = tf.train.latest_checkpoint(model_dir)
+        if latest_checkpoint:
+            self.checkpoint.restore(latest_checkpoint).assert_consumed()
 
-        return sess
+    def train(
+        self, train_X, train_Y, learning_rate, training_epochs, model_output_dir=""
+    ):
+        saver = tf.train.CheckpointManager(
+            self.checkpoint, model_output_dir, max_to_keep=3
+        )
+        for epoch in range(training_epochs):
+            with tf.GradientTape() as g:
+                pred = self.linear_regression(train_X)
+                loss = self.mean_square(pred, train_Y)
 
-    def train(self, train_X, train_Y, learning_rate, training_epochs, model_output_dir=None):
-        n_samples = train_X.shape[0]
-        # Mean squared error
-        cost = tf.reduce_sum(tf.pow(self.model - self.vars['Y'], 2)) / (2 * n_samples)
-        # Gradient descent
-        optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost)
-        # Launch the graph
-        with tf.Session() as sess:
-            sess.run(tf.global_variables_initializer())
-            saver = tf.train.Saver(tf.global_variables())
-            # Fit all training data
-            for epoch in range(training_epochs):
-                for x, y in zip(train_X, train_Y):
-                    sess.run(optimizer, feed_dict={self.vars['X']: x, self.vars['Y']: y})
-            # Save model locally
-            saver.save(sess, model_output_dir + 'model.ckpt')
+            # Compute gradients.
+            gradients = g.gradient(loss, [self.W, self.b])
 
-        return
+            # Update W and b following gradients.
+            self.optimizer.apply_gradients(zip(gradients, [self.W, self.b]))
+
+            saver.save()
 
     def predict(self, x_val):
-        return self.sess.run(self.vars['W']) * x_val + self.sess.run(self.vars['b'])
+        return float(self.linear_regression(x_val).numpy())
+
 
 """
 Declare here global objects living across requests
 """
 # use Pythonic ConfigParser to handle settings
 Config = configparser.ConfigParser()
-Config.read(HERE + '/settings.ini')
+Config.read(HERE + "/settings.ini")
 # instantiate the tf_model in "prediction mode"
-tf_model = TensorFlowRegressionModel(Config, is_training=False)
-# just print a message so we can verify in AWS the loading of dependencies was correct
-print("loading done!")
+tf_model = TensorFlowRegressionModel(Config, is_training=True)
 
 
 def validate_input(input_val):
@@ -119,7 +101,7 @@ def get_param_from_url(event, param_name):
     :param param_name: the name of the parameter in the query string
     :return: the parameter value
     """
-    params = event['queryStringParameters']
+    params = event["queryStringParameters"]
     return params[param_name]
 
 
@@ -145,28 +127,21 @@ def lambda_handler(event, context):
 
     """
     try:
-        param = get_param_from_url(event, 'x')
+        param = get_param_from_url(event, "x")
         x_val = validate_input(param)
         if x_val:
             value = tf_model.predict(x_val)
         else:
-            raise "Input parameter has invalid type: float expected"
+            raise ValueError("Input parameter has invalid type: float expected")
     except Exception as ex:
-        error_response = {
-            'error_message': "Unexpected error",
-            'stack_trace': str(ex)
-        }
+        error_response = {"error_message": "Unexpected error", "stack_trace": str(ex)}
         return return_lambda_gateway_response(503, error_response)
 
-    return return_lambda_gateway_response(200, {'value': value})
+    return return_lambda_gateway_response(200, {"value": value})
+
 
 if __name__ == "__main__":
     # for testing purposes
-    event = {
-        'queryStringParameters': {
-            'x': 2.7
-        }
-    }
+    event = {"queryStringParameters": {"x": 2.7}}
     response = lambda_handler(event, None)
-    print(json.loads(response['body']))
-    print("Got error but at least we got a response")
+    print(json.loads(response["body"]))

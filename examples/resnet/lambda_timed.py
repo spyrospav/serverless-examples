@@ -6,16 +6,16 @@ import os
 import sys
 import json
 
-start = time.time()
+# start = time.time()
 import torch
-end = time.time()
-torch_import_time = end - start
+# end = time.time()
+# torch_import_time = end - start
 
-start = time.time()
+# start = time.time()
 from torchvision import transforms
 from torchvision.models import resnet50
-end = time.time()
-torchvision_import_time = end - start
+# end = time.time()
+# torchvision_import_time = end - start
 
 from PIL import Image
 
@@ -41,12 +41,12 @@ def download(url, local_path, filename):
             f.write(requests.get(url).content)
 
 def lambda_handler(event, context=None):
-    exec_time_start = time.time()
+    # exec_time_start = time.time()
     # Download dataset
-    start = time.time()
+    # start = time.time()
     download(dataset_url, local_path, dataset_name)
-    end = time.time()
-    image_download_time = end - start
+    # end = time.time()
+    # image_download_time = end - start
 
     class_idx = json.load(open(os.path.join(local_path, dataset_name), 'r'))
     idx2label = [class_idx[str(k)][1] for k in range(len(class_idx))]
@@ -55,13 +55,13 @@ def lambda_handler(event, context=None):
     download(image_url, local_path, image_name)
 
     global model
-    model_download_time = 0
+    # model_download_time = 0
     if not model:
         # Download model checkpoint
-        start = time.time()
+        # start = time.time()
         download(model_url, local_path, model_name)
-        end = time.time()
-        model_download_time = end - start
+        # end = time.time()
+        # model_download_time = end - start
 
         model = resnet50(pretrained=False)
         model.load_state_dict(torch.load(local_path + model_name))
@@ -77,7 +77,7 @@ def lambda_handler(event, context=None):
     input_tensor = preprocess(input_image)
     input_batch = input_tensor.unsqueeze(0) # create a mini-batch as expected by the model 
 
-    start = time.time()
+    # start = time.time()
     output = model(input_batch)
     _, index = torch.max(output, 1)
     # The output has unnormalized scores. To get probabilities, you can run a softmax on it.
@@ -85,18 +85,18 @@ def lambda_handler(event, context=None):
     _, indices = torch.sort(output, descending=True)
     ret = idx2label[index]
     results = "Prediction: index {}, class {}".format(index.item(), ret)
-    end = time.time()
-    classification_time = end - start
+    # end = time.time()
+    # classification_time = end - start
 
-    exec_time_end = time.time()
+    # exec_time_end = time.time()
     return {
-        "result": results,
-        'torch_import_time': torch_import_time,
-        'torchvision_import_time': torchvision_import_time,
-        'model_download_time': model_download_time,
-        'image_download_time': image_download_time,
-        'classification_time': classification_time,
-        'execution_time': exec_time_end - exec_time_start
+        "result": results
+        # 'torch_import_time': torch_import_time,
+        # 'torchvision_import_time': torchvision_import_time,
+        # 'model_download_time': model_download_time,
+        # 'image_download_time': image_download_time,
+        # 'classification_time': classification_time,
+        # 'execution_time': exec_time_end - exec_time_start
     }
 
 if __name__ == "__main__":
