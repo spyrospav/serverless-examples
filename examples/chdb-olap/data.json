@@ -1,0 +1,28 @@
+{
+    "tests": [
+        {
+            "name": "test1",
+            "event": {
+                "query": "SELECT * FROM db_xxx.view_xxx;",
+                "default_format": "JSONCompact"
+            },
+            "context": {}
+        },
+        {
+            "name": "test2",
+            "event": {
+                "query": "INSERT INTO db_xxx.log_table_xxx VALUES ('e', 7);",
+                "default_format": "JSONCompact"
+            },
+            "context": {}
+        },
+        {
+            "name": "test3",
+            "event": {
+                "query": "SELECT * FROM db_xxx.log_table_xxx;",
+                "default_format": "JSONCompact"
+            },
+            "context": {}
+        }
+    ]
+}
