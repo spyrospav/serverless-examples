@@ -1,0 +1,20 @@
+{
+    "tests": [
+        {
+            "name": "test1",
+            "event": {
+                "action": "encrypt",
+                "message": "Hello, World!"
+            },
+            "context": {}
+        },
+        {
+            "name": "test2",
+            "event": {
+                "action": "decrypt",
+                "message": "cd7069eae7624c5385cebbcc11"
+            },
+            "context": {}
+        }
+    ]
+}
