@@ -21,6 +21,7 @@ def handler(event, context=None):
 
 if __name__ == "__main__":
     event = {
-        "url": "https://upload.wikimedia.org/wikipedia/commons/3/38/JPEG_example_JPG_RIP_001.jpg"
+        "url": "https://upload.wikimedia.org/wikipedia/commons/3/38/JPEG_example_JPG_RIP_001.jpg",
+        "filename": "test.jpg"
     }
     print(handler(event))
