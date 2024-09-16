@@ -20,8 +20,9 @@ def serverless_pipeline(model_path='./model'):
     def predict(question, context):
         """predicts the answer on an given question and context. Uses encode and decode method from above"""
         input_ids, attention_mask = encode(tokenizer,question, context)
-        start_scores, end_scores = model(torch.tensor(
+        result = model(torch.tensor(
             [input_ids]), attention_mask=torch.tensor([attention_mask]))
+        start_scores, end_scores = result.start_logits, result.end_logits
         ans_tokens = input_ids[torch.argmax(
             start_scores): torch.argmax(end_scores)+1]
         answer = decode(tokenizer,ans_tokens)
