@@ -18,7 +18,8 @@ def handler(event, context):
 
     try:
         result = sess.query(query, default_format)
-        result_json = result.data()
+        result_json = result.rows_read()
+        # result_json = result.data()
         return {
             "statusCode": 200,
             "body": json.dumps(result_json)
