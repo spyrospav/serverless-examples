@@ -15,8 +15,9 @@ def to_video(duration):
     output = 'processed_hi_chitanda_eru.mp4'
     
     # Load input video and image
-    input_video = ffmpeg.input(local_path + video_name, loglevel='quiet')
-    input_image = ffmpeg.input(local_path + image_name, loglevel='quiet')
+    input_video = ffmpeg.input(local_path + video_name)
+
+    input_image = ffmpeg.input(local_path + image_name)
     
     # Apply the same filter chain as in the original command
     trimmed_video_0 = input_video.trim(start_frame=0, end_frame=50).setpts('PTS-STARTPTS')
@@ -31,7 +32,7 @@ def to_video(duration):
     final_video = overlaid_video.drawbox(50, 50, 120, 120, color='red', thickness=5)
     
     # Output the processed video
-    ffmpeg.output(final_video, local_path + output, t=duration).run(overwrite_output=True)
+    ffmpeg.output(final_video, local_path + output, t=duration, loglevel='quiet').run(overwrite_output=True)
 
     return "Video {} finished!".format(output)
 
