@@ -31,7 +31,7 @@ def to_video(duration):
     final_video = overlaid_video.drawbox(50, 50, 120, 120, color='red', thickness=5)
     
     # Output the processed video
-    print(ffmpeg.output(final_video, local_path + output, t=duration).run(overwrite_output=True))
+    ffmpeg.output(final_video, local_path + output, t=duration).run(overwrite_output=True)
 
     return "Video {} finished!".format(output)
 
