@@ -54,9 +54,9 @@ if __name__ == "__main__":
         'action': 'encrypt',
         'message': 'Hello, World!'
     }
-    print(lambda_handler(event, None))
+    print(handler(event, None))
     event = {
         'action': 'decrypt',
         'message': 'cd7069eae7624c5385cebbcc11'
     }
-    print(lambda_handler(event, None))
+    print(handler(event, None))
