@@ -115,7 +115,7 @@ def predict_with_model(event, context):
     logger.info("Input data for prediction:")
     logger.info(str(input_for_prediction))
 
-    model_name = event['model name']
+    model_name = event['model_name']
 
     logger.info(" > Downloading model from S3 < ")
 
@@ -133,12 +133,16 @@ def predict_with_model(event, context):
 
     predicted_wine_grade = model.predict(input_for_prediction)
 
-    return str(round(predicted_wine_grade, 1))
+    # Round each element in the NumPy array to 1 decimal place
+    rounded_predicted_wine_grade = np.round(predicted_wine_grade, 1)
+
+    # Convert the rounded NumPy array to a string
+    return str(rounded_predicted_wine_grade)
 
 if __name__ == "__main__":
-    train_model(None, None)
+    model_name = train_model(None, None)
     event = {
-        "model name": "model-12408",
+        "model_name": model_name,
         "fixed acidity": "7.4",
         "volatile acidity": "0.70",
         "citric acid": "0.00",
