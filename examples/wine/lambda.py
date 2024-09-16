@@ -75,7 +75,7 @@ def train_model(event, context):
     with open(temp_file_path, 'rb') as f2:
         model_data = f2.read()
 
-    s3 = boto3.resource('s3')
+    s3 = boto3.resource('s3', region_name='us-east-1', aws_access_key_id=os.environ['AWS_ACCESS_KEY_ID'], aws_secret_access_key=os.environ['AWS_SECRET_ACCESS_KEY'])
     s3_object = s3.Object(s3_bucket, model_name)
     s3_object.put(Body=model_data)
 
