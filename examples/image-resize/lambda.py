@@ -129,4 +129,4 @@ if __name__ == '__main__':
     event = {
         "key_path": "happyFace.jpg"
     }
-    handle_resize(None, None)
+    handle_resize(event, None)

@@ -10,7 +10,7 @@ CLASSES = {
     4: "positive"
 }
 
-MODEL_FILE = 'examples/sentiment/model.dat.gz'
+MODEL_FILE = 'model.dat.gz'
 with gzip.open(MODEL_FILE, 'rb') as f:
     MODEL = pickle.load(f, encoding='latin1')
 
