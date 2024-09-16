@@ -135,4 +135,5 @@ def predict_with_model(event, context):
     return str(round(predicted_wine_grade, 1))
 
 if __name__ == "__main__":
-    print(train_model(None, None))
+    train_model(None, None)
+    print(predict_with_model(None, None))
