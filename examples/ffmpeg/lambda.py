@@ -9,13 +9,14 @@ image_name = "watermark.png"
 video_name = "hi_chitanda_eru.mp4"
 local_path = "./"
 
+
 # https://github.com/kkroening/ffmpeg-python
 def to_video(duration):
     output = 'processed_hi_chitanda_eru.mp4'
     
     # Load input video and image
-    input_video = ffmpeg.input(local_path + video_name)
-    input_image = ffmpeg.input(local_path + image_name)
+    input_video = ffmpeg.input(local_path + video_name, loglevel='quiet')
+    input_image = ffmpeg.input(local_path + image_name, loglevel='quiet')
     
     # Apply the same filter chain as in the original command
     trimmed_video_0 = input_video.trim(start_frame=0, end_frame=50).setpts('PTS-STARTPTS')
