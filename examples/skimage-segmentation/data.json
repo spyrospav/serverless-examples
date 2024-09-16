@@ -4,15 +4,15 @@
             "name": "test1",
             "event": {
                 "url": "https://upload.wikimedia.org/wikipedia/commons/3/38/JPEG_example_JPG_RIP_001.jpg",
-                "filename": "./hi.jpg"
+                "filename": "hi.jpg"
             },
             "context": {}
         },
         {
             "name": "test2",
             "event": {
-                "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Flag_of_UNESCO.svg/1920px-Flag_of_UNESCO.svg.png",
-                "filename": "./unesco.svg"
+                "url": "https://upload.wikimedia.org/wikipedia/commons/d/da/The_Parthenon_in_Athens.jpg",
+                "filename": "parthenon.jpg"
             },
             "context": {}
         }
