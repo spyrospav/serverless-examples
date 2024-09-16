@@ -66,7 +66,8 @@ def train_model(event, context):
 
     logger.info(" > Saving model to S3 < ")
 
-    model_name = model_name_prefix + str(random.randint(0, 100000))
+    # model_name = model_name_prefix + str(random.randint(0, 100000))
+    model_name = "model-10154"
     temp_file_path = '/tmp/' + model_name
 
     with open(temp_file_path, 'wb') as f1:
