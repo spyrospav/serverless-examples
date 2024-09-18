@@ -1,7 +1,7 @@
 import sympy as sp
 import json
 
-def lambda_handler(event, context):
+def handler(event, context):
     results = {}
     # Define symbols
     x, y, z = sp.symbols('x y z')
