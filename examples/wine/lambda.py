@@ -140,7 +140,8 @@ def predict_with_model(event, context):
     return str(rounded_predicted_wine_grade)
 
 if __name__ == "__main__":
-    model_name = train_model(None, None)
+    # model_name = train_model(None, None)
+    model_name = "model-10154"
     event = {
         "model_name": model_name,
         "fixed acidity": "7.4",
