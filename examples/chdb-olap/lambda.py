@@ -1,5 +1,4 @@
 import json
-import time
 from chdb import session as chs
 
 ## Create DB, Table, View in temp session, auto cleanup when session is deleted.
