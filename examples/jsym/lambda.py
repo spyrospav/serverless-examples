@@ -37,5 +37,5 @@ def handler(event, context):
     return results
 
 if __name__ == "__main__":
-    maths = lambda_handler(42, 42)
+    maths = handler(42, 42)
     print(json.dumps(maths))
