@@ -4,6 +4,8 @@ import stat
 import ffmpeg
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__))))
+sys.path.append("/var/task/ffmpeg")
+sys.path.append("/var/task/ffmpeg/ffmpeg")
 
 image_name = "watermark.png"
 video_name = "hi_chitanda_eru.mp4"
