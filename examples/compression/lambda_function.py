@@ -24,7 +24,7 @@ def compress_snappy(path, key):
 
 def handler(event, context=None):
     event = {
-        'local_path': "./",
+        'local_path': "/tmp/",
         'folder_name': "acmart"
     }
     local_path = event.get('local_path')
