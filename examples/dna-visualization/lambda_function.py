@@ -3,10 +3,11 @@ start = time.time()
 import os
 import sys
 import json
-import_time = time.time() - start
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__))))
 
 from squiggle import transform
+
+import_time = time.time() - start
 
 def visualize(data1, data2):
     
