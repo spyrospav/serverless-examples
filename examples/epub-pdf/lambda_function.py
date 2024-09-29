@@ -18,10 +18,7 @@ AWS_SECRET = os.environ['AWS_SECRET_ACCESS_KEY']
 def uploadToS3(strFolder,strFile,awsCred):
 	if (awsCred['accessKeyId'] != ''):
 		print('Uploading '+strFile+' to bucket '+awsCred['bucket']+'/'+strFolder)
-		session = boto3_session(
-					aws_access_key_id=awsCred['accessKeyId'],
-					aws_secret_access_key=awsCred['secretAccessKey'],
-					region_name="us-east-1")
+		session = boto3_session()
 		s3 = session.resource('s3')
 		file_handle = open(strFile, 'rb')
 		s3.Bucket(awsCred['bucket']).upload_file(file_handle.name, strFolder+'/'+strFile.split('/')[-1])

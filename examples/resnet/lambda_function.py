@@ -30,7 +30,7 @@ model_name = "resnet50.pth"
 model_url = "https://github.com/spcl/serverless-benchmarks-data/blob/6a17a460f289e166abb47ea6298fb939e80e8beb/400.inference/411.image-recognition/model/resnet50-19c8e357.pth?raw=true"
 dataset_name = "imagenet_class_index.json"
 dataset_url = "https://github.com/spcl/serverless-benchmarks/blob/master/benchmarks/400.inference/411.image-recognition/python/imagenet_class_index.json?raw=true"
-local_path = "./"
+local_path = "/tmp/"
 
 model = None
 
