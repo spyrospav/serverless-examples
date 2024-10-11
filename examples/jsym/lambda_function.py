@@ -5,6 +5,7 @@ import json
 IMPORT_END_TIME = time.time()
 print(f"<import {IMPORT_END_TIME - IMPORT_START_TIME} seconds>")
 def handler(event, context):
+    sleep_time = event.get("sleep_time", 0)
     results = {}
     # Define symbols
     x, y, z = sp.symbols('x y z')
@@ -38,6 +39,7 @@ def handler(event, context):
     results["evaluate"] = str(value)
 
     print(results)
+    time.sleep(sleep_time)
 
     return {"import_time": IMPORT_END_TIME - IMPORT_START_TIME}
 

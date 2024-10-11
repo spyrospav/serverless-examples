@@ -103,6 +103,7 @@ def handler(event, context):
     :param context: The invocation context
     :type context: dict
     """
+    sleep_time = event.get("sleep_time", 0)
 
     event = {
         "key_path": "happyFace.jpg"
@@ -125,6 +126,7 @@ def handler(event, context):
 
     # And finally, upload to the resize bucket the new image
     s3_resized_object = s3_connection.Object('test-resize', key_path)
+    time.sleep(sleep_time)
     try:
       s3_resized_object.put(ACL='authenticated-read', Body=resized_data)
 

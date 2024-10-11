@@ -8,9 +8,11 @@ def graph_ops(size):
     return graph.pagerank()[0]
 
 def handler(event, context=None):
+    sleep_time = event.get("sleep_time", 0)
     size = event.get("size", 1000)
     result = graph_ops(size)
 
+    time.sleep(sleep_time)
     return {
         "result": "{} size graph BFS finished!".format(size),
         "import_time": IMPORT_END_TIME - IMPORT_START_TIME

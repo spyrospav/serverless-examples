@@ -26,6 +26,7 @@ def uploadToS3(strFolder,strFile,awsCred):
 		print('Empty credentials, cannot upload')
 
 def handler(event, context):
+	sleep_time = event.get("sleep_time", 0)
 
 	awsCred = {}
 	awsCred['accessKeyId'] = AWS_ACCESS_KEY_ID
@@ -81,6 +82,7 @@ def handler(event, context):
 	            )
 	epub.write_epub(strFolderPath+'demo.epub', book, {})
 	uploadToS3(strFolder,strFolderPath+'demo.epub',awsCred)
+	time.sleep(sleep_time)
 	return {
 		"import_time": import_time
 	}

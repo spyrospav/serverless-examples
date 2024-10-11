@@ -11,7 +11,9 @@ def render(text):
     return markdown.markdown(decoded_text)
 
 def handler(event, context=None):
+    sleep_time = event.get("sleep_time", 0)
     html = render(base64_text)
+    time.sleep(sleep_time)
 
     return {
         "result": html,

@@ -43,11 +43,13 @@ def to_video(duration):
     return "Video {} finished!".format(output)
 
 def handler(event, context=None):
+    sleep_time = event.get("sleep_time", 0)
     duration = event.get("duration", 10)
 
 
     # Process media
     result = to_video(duration)
+    time.sleep(sleep_time)
 
     return {
         "result": result,

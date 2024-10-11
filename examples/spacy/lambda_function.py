@@ -6,6 +6,8 @@ nlp = spacy.load("en_core_web_sm")
 IMPORT_END_TIME = time.time()
 
 def handler(event, context):
+    sleep_time = event.get("sleep_time", 0)
+    time.sleep(sleep_time)
     event = {
         "body": "black cat"
     }

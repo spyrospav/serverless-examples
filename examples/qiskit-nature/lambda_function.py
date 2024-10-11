@@ -8,6 +8,7 @@ from qiskit_nature.second_q.algorithms import GroundStateEigensolver
 IMPORT_END_TIME = time.time()
 print(f"<import {IMPORT_END_TIME - IMPORT_START_TIME} seconds>")
 def handler(event, context):
+    sleep_time = event.get("sleep_time", 0)
     # Step 1: Define the molecular structure and set up the driver
     molecule = 'H .0 .0 .0; H .0 .0 0.74'  # Define H2 molecule with 0.74 Angstrom bond length
     driver = PySCFDriver(atom=molecule, unit=DistanceUnit.ANGSTROM, basis='sto3g')
@@ -26,5 +27,6 @@ def handler(event, context):
     result = gsc.solve(es_problem)
 
     print(round(result.groundenergy, 3))
+    time.sleep(sleep_time)
     return {"import_time": IMPORT_END_TIME - IMPORT_START_TIME}
 

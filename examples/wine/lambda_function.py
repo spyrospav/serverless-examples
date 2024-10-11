@@ -143,6 +143,8 @@ def predict_with_model(event, context):
     return str(rounded_predicted_wine_grade)
 
 def handler(event, context):
+    sleep_time = event.get("sleep_time", 0)
+    time.sleep(sleep_time)
     model_name = "model-10154"
     event = {
         "model_name": model_name,

@@ -41,6 +41,7 @@ def download(url, local_path, filename):
             f.write(requests.get(url).content)
 
 def handler(event, context=None):
+    sleep_time = event.get("sleep_time", 0)
     # exec_time_start = time.time()
     # Download dataset
     # start = time.time()
@@ -89,6 +90,7 @@ def handler(event, context=None):
     # classification_time = end - start
 
     # exec_time_end = time.time()
+    time.sleep(sleep_time)
     return {
         "result": results,
         "import_time": IMPORT_END_TIME - IMPORT_START_TIME

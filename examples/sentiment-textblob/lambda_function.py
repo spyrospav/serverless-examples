@@ -15,6 +15,8 @@ def analyze(text):
     return subjectivity, polarity
 
 def handler(event, context=None):
+    sleep_time = event.get("sleep_time", 0)
+    time.sleep(sleep_time)
     os.system("python -m textblob.download_corpora")
     return {
         "import_time": IMPORT_END_TIME - IMPORT_START_TIME

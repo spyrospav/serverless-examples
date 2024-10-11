@@ -52,6 +52,7 @@ def process(event, context):
         }
 
 def handler(event, context):
+    sleep_time = event.get("sleep_time", 0)
     event = {
         'action': 'encrypt',
         'message': 'Hello, World!'
@@ -62,6 +63,7 @@ def handler(event, context):
         'message': 'cd7069eae7624c5385cebbcc11'
     }
     print(process(event, None))
+    time.sleep(sleep_time)
     return {"import_time": import_time}
 
 if __name__ == "__main__":

@@ -23,6 +23,7 @@ def compress_snappy(path, key):
 
 
 def handler(event, context=None):
+    sleep_time = event.get("sleep_time", 0)
     event = {
         'local_path': "/tmp/",
         'folder_name': "acmart"
@@ -31,6 +32,7 @@ def handler(event, context=None):
     folder_name = event.get('folder_name')
     archive_name, archive_size = compress_snappy(local_path, folder_name)
 
+    time.sleep(sleep_time)
     return {
         "result": "{} compression in size {} finished!".format(archive_name, archive_size),
         "import_time": import_time

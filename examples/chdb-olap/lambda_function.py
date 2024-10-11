@@ -38,6 +38,7 @@ def do_query(event, context):
         }
 
 def handler(event, context):
+    sleep_time = event.get("sleep_time", 0)
     event = {
         "query": "SELECT * FROM db_xxx.view_xxx;",
         "default_format": "JSONCompact"
@@ -53,6 +54,7 @@ def handler(event, context):
         "default_format": "JSONCompact"
     }
     print(do_query(event, None))
+    time.sleep(sleep_time)
     return {"import_time": import_time}
 
 if __name__ == "__main__":

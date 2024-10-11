@@ -128,6 +128,8 @@ def handler(event, context):
     serverless.yml file.
 
     """
+    sleep_time = event.get("sleep_time", 0)
+    time.sleep(sleep_time)
     event = {"queryStringParameters": {"x": 2.7}}
     try:
         param = get_param_from_url(event, "x")

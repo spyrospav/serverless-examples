@@ -13,6 +13,7 @@ def visualize(data1, data2):
     return transform(data1) + transform(data2)
 
 def handler(event, context=None):
+    sleep_time = event.get("sleep_time", 0)
     event = {
         "dna1": "gene1.txt",
         "dna2": "gene2.txt"
@@ -28,7 +29,7 @@ def handler(event, context=None):
     
     result = visualize(data1, data2)
     print(result)
-
+    time.sleep(sleep_time)
     return {
         "import_time": import_time
     }

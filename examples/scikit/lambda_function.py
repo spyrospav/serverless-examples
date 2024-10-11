@@ -9,6 +9,7 @@ model_name = 'model.joblib'
 model = joblib.load(model_name)
 
 def handler(event, context):
+    sleep_time = event.get("sleep_time", 0)
     body = {
         "message": "OK",
     }
@@ -57,5 +58,6 @@ def handler(event, context):
         },
         "import_time": IMPORT_END_TIME - IMPORT_START_TIME
     }
+    time.sleep(sleep_time)
 
     return response
