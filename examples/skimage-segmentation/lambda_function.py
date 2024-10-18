@@ -25,7 +25,7 @@ def handler(event, context=None):
         f.write(response.data)
 
     # Read the image
-    img = io.imread(filename)
+    img = io.imread(DIR + filename)
     
     # Apply felzenszwalb segmentation
     segments = felzenszwalb(img, scale=100, sigma=0.5, min_size=50)
