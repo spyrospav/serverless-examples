@@ -118,7 +118,8 @@ def handle_resize(event, context):
     # And finally, upload to the resize bucket the new image
     s3_resized_object = s3_connection.Object('test-resize', key_path)
     try:
-      s3_resized_object.put(ACL='authenticated-read', Body=resized_data)
+      s3_resized_object.put(Body=resized_data)
+      #s3_resized_object.put(ACL='authenticated-read', Body=resized_data)
 
       # Finally remove, as the bucket is public and we don't want just anyone dumping the list of our files!
       s3_resized_object.delete()
