@@ -10,10 +10,10 @@ BUCKET_NAME = "serverless-torch-xl"
 AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
 AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
 
-session = boto3.Session(
-    aws_access_key_id=AWS_ACCESS_KEY_ID,
-    aws_secret_access_key=AWS_SECRET_ACCESS_KEY
-)
+# session = boto3.Session(
+#     aws_access_key_id=AWS_ACCESS_KEY_ID,
+#     aws_secret_access_key=AWS_SECRET_ACCESS_KEY
+# )
 
 
 def resize_image(image, resize_width, resize_height):
@@ -117,14 +117,15 @@ def handle_resize(event, context):
 
     # And finally, upload to the resize bucket the new image
     s3_resized_object = s3_connection.Object('test-resize', key_path)
-    try:
-      s3_resized_object.put(Body=resized_data)
-      #s3_resized_object.put(ACL='authenticated-read', Body=resized_data)
+    print("Resized data: ", resized_data)
+    # try:
+    #   s3_resized_object.put(Body=resized_data)
+    #   #s3_resized_object.put(ACL='authenticated-read', Body=resized_data)
 
-      # Finally remove, as the bucket is public and we don't want just anyone dumping the list of our files!
-      s3_resized_object.delete()
-    except Exception as e:
-        print("ignoring error: {}".format(e))
+    #   # Finally remove, as the bucket is public and we don't want just anyone dumping the list of our files!
+    #   s3_resized_object.delete()
+    # except Exception as e:
+    #     print("ignoring error: {}".format(e))
   
 if __name__ == '__main__':
     event = {

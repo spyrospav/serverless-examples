@@ -127,12 +127,13 @@ def handler(event, context):
     # And finally, upload to the resize bucket the new image
     s3_resized_object = s3_connection.Object('test-resize', key_path)
     time.sleep(sleep_time)
-    try:
-      s3_resized_object.put(Body=resized_data)
-      #s3_resized_object.put(ACL='authenticated-read', Body=resized_data)
-      
-      # Finally remove, as the bucket is public and we don't want just anyone dumping the list of our files!
-      s3_resized_object.delete()
-    except Exception as e:
-        print("ignoring error: {}".format(e))
+    print("Resized data: ", resized_data)
+    # try:
+    #   s3_resized_object.put(Body=resized_data)
+    #   #s3_resized_object.put(ACL='authenticated-read', Body=resized_data)
+
+    #   # Finally remove, as the bucket is public and we don't want just anyone dumping the list of our files!
+    #   s3_resized_object.delete()
+    # except Exception as e:
+    #     print("ignoring error: {}".format(e))
     return {"import_time": IMPORT_END_TIME - IMPORT_START_TIME}
